@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Master - Ultimate Edition</title>
+    <title>Finance Master - Emerald Edition</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <script src="https://cloudflare.com"></script>
     <style>
@@ -17,35 +17,50 @@
             --input-bg: #0f172a;
         }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text); transition: 0.3s; }
-        .container { background: var(--card); padding: 25px; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; max-width: 480px; position: relative; }
-        .app-header { text-align: center; margin-bottom: 20px; }
-        .brand-title { font-size: 28px; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; margin: 5px 0; }
-        .brand-finance { color: var(--primary); }
-        .brand-master { color: var(--text); }
-        .theme-toggle { position: absolute; top: 20px; right: 20px; background: var(--border); border: none; padding: 10px; border-radius: 12px; cursor: pointer; color: var(--text); }
-        .user-profile { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 10px; background: var(--bg); border-radius: 20px; border: 1px solid var(--border); }
-        .profile-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; }
-        .dashboard-card { background: linear-gradient(145deg, #103a24, #0a1f14); color: white; padding: 25px; border-radius: 28px; margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
-        #saldoFinal { font-size: 38px; font-weight: 900; display: block; text-align: center; margin: 5px 0; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 15px; }
-        .stat-item input { background: none; border: none; color: white; font-weight: 800; width: 100%; font-size: 16px; text-align: center; outline: none; }
-        .progress-container { position: relative; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 30px 0 10px; }
-        #barFill { height: 100%; width: 0%; background: var(--success); border-radius: 10px; transition: 1s ease; position: relative; }
-        #money-icon { position: absolute; right: -12px; top: -25px; font-size: 22px; }
-        .input-group { position: relative; margin-bottom: 12px; }
-        .input-group i { position: absolute; left: 14px; top: 14px; color: var(--primary); }
-        input, select { width: 100%; padding: 12px 12px 12px 42px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; outline: none; font-size: 14px; }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 16px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .action-btns { display: flex; gap: 10px; }
-        .btn-action { border: none; background: none; cursor: pointer; font-size: 14px; opacity: 0.7; transition: 0.2s; }
-        .btn-action:hover { opacity: 1; }
-        .btn-edit { color: var(--primary); }
-        .btn-del { color: var(--danger); }
+        .container { background: var(--card); padding: 25px; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; max-width: 500px; position: relative; }
+        
         .screen { display: none; }
         .active { display: block; animation: fadeIn 0.4s ease; }
+
+        /* BRANDING */
+        .brand-header { text-align: center; margin-bottom: 25px; }
+        .brand-title { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; margin: 0; }
+        .brand-finance { color: var(--primary); }
+        .brand-master { color: var(--text); }
+        
+        .theme-toggle { position: absolute; top: 20px; right: 20px; background: var(--border); border: none; padding: 10px; border-radius: 12px; cursor: pointer; color: var(--text); z-index: 10; }
+
+        /* PERFIL */
+        .user-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .profile-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); cursor: pointer; }
+
+        /* DASHBOARD */
+        .dashboard-card { background: linear-gradient(145deg, #103a24, #0a1f14); color: white; padding: 30px 25px; border-radius: 28px; margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .balance-box label { display: block; font-size: 13px; font-weight: 700; opacity: 0.8; margin-bottom: 8px; text-transform: uppercase; text-align: center;}
+        #saldoFinalDisplay { font-size: 42px; font-weight: 900; text-align: center; width: 100%; display: block; letter-spacing: -1px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 15px; align-items: flex-end; }
+        .stat-item { text-align: center; display: flex; flex-direction: column; justify-content: flex-end; }
+        .stat-item:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+        
+        .stat-label { font-size: 11px; font-weight: 800; opacity: 0.6; text-transform: uppercase; margin-bottom: 8px; }
+        .stat-value { font-size: 18px; font-weight: 800; color: #ff9f8e; margin: 0; line-height: 1.2; }
+
+        /* BARRA PROGRESSO */
+        .progress-container { position: relative; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 40px 0 10px; }
+        #barFill { height: 100%; width: 0%; background: var(--success); border-radius: 10px; transition: 1s ease; position: relative; }
+        #money-icon { position: absolute; right: -12px; top: -25px; font-size: 24px; }
+
+        /* INPUTS */
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group i { position: absolute; left: 14px; top: 16px; color: var(--primary); font-size: 18px; }
+        input, select { width: 100%; padding: 14px 14px 14px 45px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; outline: none; font-size: 16px; }
+        
+        .btn-add { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 17px; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        
+        #pdf-content { display: none; padding: 40px; color: #000; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #relatorio-print { padding: 40px; color: #1e293b; background: white; display: none; }
     </style>
 </head>
 <body>
@@ -54,71 +69,84 @@
     <button class="theme-toggle" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
 
     <div id="login-screen" class="screen active">
-        <div class="app-header">
-            <img src="https://ibb.co" style="width: 150px; border-radius: 20px;">
-            <h1 class="brand-title"><span class="brand-finance">Finance</span> <span class="brand-master">Master</span></h1>
+        <div class="brand-header" style="margin-top: 40px;">
+            <img src="https://ibb.co" style="width: 150px; border-radius: 20px; margin-bottom: 15px;">
+            <h1 class="brand-title"><span class="brand-finance">Finance</span> <span class="brand-master" style="color: var(--primary)">Master</span></h1>
         </div>
-        <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="log-user" placeholder="Seu Nome"></div>
-        <button class="btn-add" onclick="handleLogin()">ACESSAR SISTEMA</button>
+        <div class="input-group" style="margin-top: 30px;"><i class="fa-solid fa-user"></i><input type="text" id="userInput" placeholder="Seu nome"></div>
+        <div class="input-group"><i class="fa-solid fa-wallet"></i><input type="number" id="saldoInicialInput" placeholder="Saldo inicial do mês"></div>
+        <button class="btn-add" onclick="efetuarLogin()">ACESSAR CONTA</button>
     </div>
 
     <div id="app-screen" class="screen">
-        <div class="app-header" style="margin-bottom: 10px;">
-            <h1 class="brand-title" style="font-size: 22px; margin: 0;"><span class="brand-finance">Finance</span> <span class="brand-master" style="color: inherit">Master</span></h1>
+        <div class="brand-header">
+            <h1 class="brand-title"><span class="brand-finance">Finance</span> <span class="brand-master">Master</span></h1>
         </div>
 
-        <div class="user-profile">
+        <div class="user-header">
             <div onclick="document.getElementById('uploadFoto').click()" style="position: relative;">
                 <img id="userPhoto" src="https://ui-avatars.com" class="profile-img">
                 <input type="file" id="uploadFoto" accept="image/*" style="display: none" onchange="atualizarFoto(this)">
             </div>
-            <div style="flex:1">
-                <small style="opacity:0.5; font-weight:800; font-size: 9px;">MESTRE DE FINANÇAS,</small>
-                <strong id="userNameDisplay" style="display:block; font-size:16px">Usuário</strong>
+            <div class="user-info" style="margin-left: 10px;">
+                <small style="opacity: 0.6; font-size: 10px; font-weight: 800;">BEM-VINDO,</small>
+                <strong id="userNameDisplay" style="display: block; font-size: 18px;">Usuário</strong>
             </div>
-            <button onclick="logout()" style="background:none; border:none; color:var(--danger); cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
         </div>
 
         <div class="dashboard-card">
-            <div style="text-align: center;"><small style="opacity: 0.6; font-weight: 700;">SALDO DISPONÍVEL</small><span id="saldoFinal">R$ 0,00</span></div>
+            <div class="balance-box">
+                <label>Qual o saldo disponível para o mês</label>
+                <span id="saldoFinalDisplay">R$ 0,00</span>
+            </div>
+            
             <div class="stats-grid">
-                <div class="stat-item"><label style="font-size: 9px; opacity: 0.5;">MINHA RENDA</label><input type="number" id="rendaInput" value="5000" oninput="salvarRenda()"></div>
-                <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1);"><label style="font-size: 9px; opacity: 0.5;">GASTOS</label><span id="totalDisplay" style="font-size: 16px; font-weight: 800; color: #ff9f8e;">R$ 0,00</span></div>
+                <div class="stat-item">
+                    <span class="stat-label">Gastos no Cartão</span>
+                    <p id="cartaoDisplay" class="stat-value">R$ 0,00</p>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Gastos Totais</span>
+                    <p id="totalDisplay" class="stat-value">R$ 0,00</p>
+                </div>
             </div>
             <div class="progress-container"><div id="barFill"><span id="money-icon">💰</span></div></div>
         </div>
 
         <input type="hidden" id="edit-id">
         <div class="input-group"><i class="fa-solid fa-pen-nib"></i><input type="text" id="desc" placeholder="Descrição"></div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
             <div class="input-group" style="margin:0"><i class="fa-solid fa-dollar-sign"></i><input type="number" id="valor" placeholder="Valor"></div>
-            <select id="pagamento">
+            <div class="input-group" style="margin:0">
+                <i class="fa-solid fa-layer-group"></i>
+                <select id="categoria" style="padding-left: 45px;">
+                    <option value="alimentacao">🍕 Alimentação</option>
+                    <option value="transporte">🚗 Transporte</option>
+                    <option value="contas">📄 Contas</option>
+                    <option value="outros">✨ Outros</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-group"><i class="fa-solid fa-credit-card"></i>
+            <select id="pagamento" style="padding-left:45px">
                 <option value="dinheiro">💵 Dinheiro</option>
                 <option value="pix">⚡ Pix</option>
                 <option value="cartao">💳 Cartão</option>
             </select>
         </div>
-        <div class="input-group"><i class="fa-solid fa-list-ul"></i>
-            <select id="categoria">
-                <option value="alimentacao">🍕 Alimentação</option>
-                <option value="transporte">🚗 Transporte</option>
-                <option value="contas">📄 Contas</option>
-                <option value="outros">✨ Outros</option>
-            </select>
-        </div>
 
-        <button class="btn-add" id="btn-main-action" onclick="salvarGasto()">ADICIONAR GASTO</button>
-        <button onclick="exportarRelatorio()" style="width:100%; border:none; background:none; color:var(--primary); font-weight:700; cursor:pointer; font-size:12px;"><i class="fa-solid fa-file-pdf"></i> GERAR RELATÓRIO PDF</button>
+        <button class="btn-add" id="btnAction" onclick="salvarGasto()">ADICIONAR DESPESA</button>
+        <button onclick="gerarPDF()" style="width:100%; border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer; margin-top:15px;"><i class="fa-solid fa-file-pdf"></i> GERAR RELATÓRIO PDF</button>
 
-        <div id="lista" style="max-height: 180px; overflow-y: auto; margin-top: 15px; border-top: 1px solid var(--border);"></div>
+        <div id="lista" style="max-height: 250px; overflow-y: auto; margin-top: 15px; border-top: 1px solid var(--border);"></div>
     </div>
 </div>
 
-<div id="relatorio-print">
-    <h1 style="color:#107c41">FINANCE MASTER - RELATÓRIO</h1>
-    <p id="rel-usuario"></p>
-    <p id="rel-resumo" style="font-weight:bold"></p>
-    <hr><div id="rel-corpo"></div>
+<div id="pdf-content">
+    <h1 style="color: #107c41; text-align: center;">Finance Master - Relatório</h1>
+    <div id="pdf-lista"></div>
 </div>
 
 <script>
@@ -126,14 +154,28 @@
     const iconesPag = { dinheiro: '💵', pix: '⚡', cartao: '💳' };
     const iconesCat = { alimentacao: '🍕', transporte: '🚗', contas: '📄', outros: '✨' };
 
-    window.onload = () => { if(localStorage.getItem('fm_user_name')) { irParaApp(); document.getElementById('rendaInput').value = localStorage.getItem('fm_renda') || 5000; } };
+    window.onload = () => {
+        if(localStorage.getItem('fm_user_name')) irParaApp(localStorage.getItem('fm_user_name'));
+    };
 
-    function handleLogin() { const user = document.getElementById('log-user').value; if (user.trim().length > 1) { localStorage.setItem('fm_user_name', user); irParaApp(); } }
-    function irParaApp() { document.getElementById('login-screen').classList.remove('active'); document.getElementById('app-screen').classList.add('active'); carregarPerfil(); render(); }
-    function logout() { localStorage.removeItem('fm_user_name'); location.reload(); }
-    function salvarRenda() { localStorage.setItem('fm_renda', document.getElementById('rendaInput').value); render(); }
-    function carregarPerfil() { document.getElementById('userNameDisplay').innerText = localStorage.getItem('fm_user_name'); const foto = localStorage.getItem('fm_user_photo'); if(foto) document.getElementById('userPhoto').src = foto; }
-    function atualizarFoto(input) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { localStorage.setItem('fm_user_photo', e.target.result); document.getElementById('userPhoto').src = e.target.result; }; reader.readAsDataURL(input.files[0]); } }
+    function efetuarLogin() {
+        const nome = document.getElementById('userInput').value;
+        const saldoIni = document.getElementById('saldoInicialInput').value;
+        if(nome && saldoIni) {
+            localStorage.setItem('fm_user_name', nome);
+            localStorage.setItem('fm_saldo_base', saldoIni);
+            irParaApp(nome);
+        }
+    }
+
+    function irParaApp(nome) {
+        document.getElementById('login-screen').classList.remove('active');
+        document.getElementById('app-screen').classList.add('active');
+        document.getElementById('userNameDisplay').innerText = nome;
+        const fotoSalva = localStorage.getItem('fm_user_photo');
+        if(fotoSalva) document.getElementById('userPhoto').src = fotoSalva;
+        render();
+    }
 
     function salvarGasto() {
         const desc = document.getElementById('desc').value;
@@ -142,21 +184,57 @@
         const cat = document.getElementById('categoria').value;
         const editId = document.getElementById('edit-id').value;
 
-        if (!desc || isNaN(valor)) return alert("Preencha descrição e valor!");
+        if (!desc || isNaN(valor)) return;
 
         if (editId) {
             const index = gastos.findIndex(g => g.id == editId);
             gastos[index] = { ...gastos[index], desc, valor, pag, cat };
             document.getElementById('edit-id').value = "";
-            document.getElementById('btn-main-action').innerText = "ADICIONAR GASTO";
+            document.getElementById('btnAction').innerText = "ADICIONAR DESPESA";
         } else {
-            gastos.push({ id: Date.now(), desc, valor, pag, cat, data: new Date().toLocaleDateString() });
+            gastos.push({ id: Date.now(), desc, valor, pag, cat });
         }
-
+        
         localStorage.setItem('fm_gastos', JSON.stringify(gastos));
         document.getElementById('desc').value = '';
         document.getElementById('valor').value = '';
         render();
+    }
+
+    function render() {
+        const saldoBase = parseFloat(localStorage.getItem('fm_saldo_base')) || 0;
+        
+        // SOMA AUTOMÁTICA DE TODOS OS GASTOS
+        const totalGeral = gastos.reduce((acc, i) => acc + i.valor, 0);
+        
+        // SOMA APENAS O QUE FOI GASTO NO CARTÃO
+        const totalCartao = gastos.filter(g => g.pag === 'cartao').reduce((acc, i) => acc + i.valor, 0);
+        
+        const saldoAtual = saldoBase - totalGeral;
+
+        document.getElementById('totalDisplay').innerText = `R$ ${totalGeral.toFixed(2)}`;
+        document.getElementById('cartaoDisplay').innerText = `R$ ${totalCartao.toFixed(2)}`;
+        document.getElementById('saldoFinalDisplay').innerText = `R$ ${saldoAtual.toLocaleString('pt-BR')}`;
+        
+        const perc = saldoBase > 0 ? Math.min((totalGeral/saldoBase)*100, 100) : 0;
+        document.getElementById('barFill').style.width = `${perc}%`;
+        document.getElementById('barFill').style.backgroundColor = perc > 85 ? '#ff7675' : '#2ecc71';
+
+        document.getElementById('lista').innerHTML = gastos.map(g => `
+            <div class="list-item">
+                <div style="flex:1">
+                    <span style="display:block; font-weight:700; font-size:16px;">${iconesCat[g.cat]} ${g.desc}</span>
+                    <small style="opacity:0.6; font-size:12px;">${iconesPag[g.pag]} ${g.pag.toUpperCase()}</small>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <strong style="color:var(--danger); font-size:16px;">- R$ ${g.valor.toFixed(2)}</strong>
+                    <div style="display:flex; gap:8px;">
+                        <button style="color:var(--primary); border:none; background:none; cursor:pointer;" onclick="editarGasto(${g.id})"><i class="fa-solid fa-pen"></i></button>
+                        <button style="color:var(--danger); border:none; background:none; cursor:pointer;" onclick="deletarGasto(${g.id})"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            </div>
+        `).reverse().join('');
     }
 
     function editarGasto(id) {
@@ -166,47 +244,27 @@
         document.getElementById('pagamento').value = g.pag;
         document.getElementById('categoria').value = g.cat;
         document.getElementById('edit-id').value = g.id;
-        document.getElementById('btn-main-action').innerText = "SALVAR ALTERAÇÕES";
+        document.getElementById('btnAction').innerText = "SALVAR ALTERAÇÃO";
         window.scrollTo(0,0);
     }
 
-    function deletarGasto(id) { if(confirm("Deseja excluir este gasto?")) { gastos = gastos.filter(g => g.id !== id); localStorage.setItem('fm_gastos', JSON.stringify(gastos)); render(); } }
-
-    function render() {
-        const renda = parseFloat(localStorage.getItem('fm_renda')) || 5000;
-        const total = gastos.reduce((acc, i) => acc + i.valor, 0);
-        document.getElementById('totalDisplay').innerText = `R$ ${total.toFixed(2)}`;
-        document.getElementById('saldoFinal').innerText = `R$ ${(renda - total).toLocaleString('pt-BR')}`;
-        const perc = renda > 0 ? Math.min((total/renda)*100, 100) : 0;
-        document.getElementById('barFill').style.width = `${perc}%`;
-        document.getElementById('barFill').style.backgroundColor = perc > 85 ? '#ff7675' : '#2ecc71';
-
-        document.getElementById('lista').innerHTML = gastos.map(g => `
-            <div class="list-item">
-                <div style="flex:1"><span style="display:block; font-weight:700; font-size:14px;">${iconesCat[g.cat]} ${g.desc}</span><small style="opacity:0.6; font-size:10px;">${iconesPag[g.pag]} ${g.pag.toUpperCase()}</small></div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <strong style="color:var(--danger); font-size:14px;">- R$ ${g.valor.toFixed(2)}</strong>
-                    <div class="action-btns">
-                        <button class="btn-action btn-edit" onclick="editarGasto(${g.id})"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-action btn-del" onclick="deletarGasto(${g.id})"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-            </div>
-        `).reverse().join('');
+    function deletarGasto(id) { 
+        if(confirm("Excluir?")) {
+            gastos = gastos.filter(g => g.id !== id); 
+            localStorage.setItem('fm_gastos', JSON.stringify(gastos)); 
+            render(); 
+        }
     }
 
-    function exportarRelatorio() {
-        const nome = localStorage.getItem('fm_user_name');
-        const renda = localStorage.getItem('fm_renda');
-        const total = gastos.reduce((acc, i) => acc + i.valor, 0);
-        document.getElementById('rel-usuario').innerText = `Usuário: ${nome}`;
-        document.getElementById('rel-resumo').innerText = `Resumo: R$ ${renda} (Renda) | R$ ${total.toFixed(2)} (Gastos)`;
-        document.getElementById('rel-corpo').innerHTML = gastos.map(g => `<div style="border-bottom:1px solid #eee; padding:5px 0;">${g.data} - ${g.desc}: R$ ${g.valor.toFixed(2)}</div>`).join('');
-        const element = document.getElementById('relatorio-print');
+    function gerarPDF() {
+        const element = document.getElementById('pdf-content');
+        document.getElementById('pdf-lista').innerHTML = document.getElementById('lista').innerHTML;
         element.style.display = 'block';
         html2pdf().from(element).save().then(() => element.style.display = 'none');
     }
+
     function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+    function atualizarFoto(input) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { localStorage.setItem('fm_user_photo', e.target.result); document.getElementById('userPhoto').src = e.target.result; }; reader.readAsDataURL(input.files[0]); } }
 </script>
 </body>
 </html>

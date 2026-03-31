@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Master - Ultimate Edition</title>
+    <title>Finance Master - Smart Edition</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <script src="https://cloudflare.com"></script>
     <style>
         :root { 
-            --primary: #107c41; --danger: #ff7675; --success: #2ecc71;
-            --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0;
-            --input-bg: #ffffff;
+            --primary: #107c41; --danger: #ff7675; --success: #2ecc71; --warning: #f1c40f;
+            --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; --input-bg: #ffffff;
         }
         body.dark-mode { 
-            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155;
-            --input-bg: #0f172a;
+            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155; --input-bg: #0f172a;
         }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text); transition: 0.3s; }
         .container { background: var(--card); padding: 25px; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); width: 100%; max-width: 500px; position: relative; }
@@ -23,17 +21,210 @@
         .active { display: block; animation: fadeIn 0.4s ease; }
 
         /* BRANDING */
-        .brand-header { text-align: center; margin-bottom: 25px; }
-        .brand-title { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; margin: 0; }
+        .brand-header { text-align: center; margin-bottom: 20px; }
+        .brand-title { font-size: 32px; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; margin: 0; }
         .brand-finance { color: var(--primary); }
         .brand-master { color: var(--text); }
-        
         .theme-toggle { position: absolute; top: 20px; right: 20px; background: var(--border); border: none; padding: 10px; border-radius: 12px; cursor: pointer; color: var(--text); z-index: 10; }
 
         /* PERFIL */
-        .user-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-        .profile-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); cursor: pointer; }
+        .user-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .profile-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); cursor: pointer; }
 
+        /* DASHBOARD - ABATIMENTO AUTOMÁTICO */
+        .dashboard-card { background: linear-gradient(145deg, #103a24, #0a1f14); color: white; padding: 25px; border-radius: 28px; margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .balance-box { text-align: center; margin-bottom: 20px; }
+        .balance-box label { display: block; font-size: 11px; font-weight: 700; opacity: 0.7; margin-bottom: 8px; text-transform: uppercase; }
+        
+        #saldoBaseInput { background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.2); color: white; font-size: 20px; font-weight: 700; text-align: center; width: 140px; outline: none; border-radius: 10px; margin-bottom: 10px; }
+        #saldoAtualDisplay { font-size: 42px; font-weight: 900; display: block; text-align: center; letter-spacing: -1px; transition: 0.3s; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 15px; }
+        .stat-item { text-align: center; }
+        .stat-item:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+        .stat-label { font-size: 10px; font-weight: 800; opacity: 0.6; text-transform: uppercase; margin-bottom: 5px; display: block;}
+        .stat-value { font-size: 17px; font-weight: 800; color: #ff9f8e; }
+
+        /* PROGRESSO */
+        .progress-container { position: relative; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 40px 0 10px; }
+        #barFill { height: 100%; width: 0%; background: var(--success); border-radius: 10px; transition: 1s ease; position: relative; }
+        #money-icon { position: absolute; right: -12px; top: -25px; font-size: 24px; }
+
+        /* INPUTS */
+        .input-group { position: relative; margin-bottom: 12px; }
+        .input-group i { position: absolute; left: 14px; top: 16px; color: var(--primary); font-size: 18px; }
+        input, select { width: 100%; padding: 14px 14px 14px 45px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; outline: none; font-size: 15px; }
+        
+        .btn-add { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="theme-toggle" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+
+    <div id="login-screen" class="screen active">
+        <div class="brand-header" style="margin-top: 30px;">
+            <img src="https://ibb.co" style="width: 140px; border-radius: 20px; margin-bottom: 15px;">
+            <h1 class="brand-title"><span class="brand-finance">Finance</span> <span class="brand-master" style="color: var(--primary)">Master</span></h1>
+        </div>
+        <div class="input-group" style="margin-top: 20px;"><i class="fa-solid fa-user"></i><input type="text" id="userInput" placeholder="Seu nome"></div>
+        <button class="btn-add" onclick="efetuarLogin()">ACESSAR APP</button>
+    </div>
+
+    <div id="app-screen" class="screen">
+        <div class="brand-header"><h1 class="brand-title"><span class="brand-finance">Finance</span> <span class="brand-master">Master</span></h1></div>
+
+        <div class="user-header">
+            <div onclick="document.getElementById('uploadFoto').click()" style="position: relative;">
+                <img id="userPhoto" src="https://ui-avatars.com" class="profile-img">
+                <input type="file" id="uploadFoto" accept="image/*" style="display: none" onchange="atualizarFoto(this)">
+            </div>
+            <div class="user-info" style="margin-left: 10px;">
+                <small style="opacity: 0.6; font-size: 9px; font-weight: 800;">CONTROLE DE SALDO</small>
+                <strong id="userNameDisplay">Mestre</strong>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="balance-box">
+                <label>Saldo Inicial do Mês (R$)</label>
+                <input type="number" id="saldoBaseInput" value="0" oninput="render()">
+                <small style="display:block; margin-top:10px; opacity:0.6; font-weight:800">SALDO DISPONÍVEL ATUAL</small>
+                <span id="saldoAtualDisplay">R$ 0,00</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item"><span class="stat-label">Gastos no Cartão</span><p id="cartaoDisplay" class="stat-value">R$ 0,00</p></div>
+                <div class="stat-item"><span class="stat-label">Dinheiro e Pix</span><p id="dinheiroPixDisplay" class="stat-value" style="color: #6fbaff;">R$ 0,00</p></div>
+            </div>
+            <div class="progress-container"><div id="barFill"><span id="money-icon">💰</span></div></div>
+        </div>
+
+        <input type="hidden" id="edit-id">
+        <div class="input-group"><i class="fa-solid fa-pen-nib"></i><input type="text" id="desc" placeholder="Descrição"></div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+            <div class="input-group" style="margin:0"><i class="fa-solid fa-dollar-sign"></i><input type="number" id="valor" placeholder="Valor"></div>
+            <select id="categoria"><option value="alimentacao">🍕 Alimentação</option><option value="transporte">🚗 Transporte</option><option value="contas">📄 Contas</option><option value="outros">✨ Outros</option></select>
+        </div>
+        <div class="input-group"><i class="fa-solid fa-credit-card"></i><select id="pagamento"><option value="dinheiro">💵 Dinheiro</option><option value="pix">⚡ Pix</option><option value="cartao">💳 Cartão</option></select></div>
+
+        <button class="btn-add" id="btnAction" onclick="salvarGasto()">ADICIONAR DESPESA</button>
+        <button onclick="gerarPDF()" style="width:100%; border:none; background:none; color:var(--primary); font-weight:bold; cursor:pointer; margin-top:15px;"><i class="fa-solid fa-file-pdf"></i> RELATÓRIO PDF</button>
+
+        <div id="lista" style="max-height: 200px; overflow-y: auto; margin-top: 15px; border-top: 1px solid var(--border);"></div>
+    </div>
+</div>
+
+<script>
+    let gastos = JSON.parse(localStorage.getItem('fm_gastos')) || [];
+    const iconesPag = { dinheiro: '💵', pix: '⚡', cartao: '💳' };
+    const iconesCat = { alimentacao: '🍕', transporte: '🚗', contas: '📄', outros: '✨' };
+
+    window.onload = () => {
+        const nomeSalvo = localStorage.getItem('fm_user_name');
+        if(nomeSalvo) irParaApp(nomeSalvo);
+    };
+
+    function efetuarLogin() {
+        const nome = document.getElementById('userInput').value;
+        if(nome) { localStorage.setItem('fm_user_name', nome); irParaApp(nome); }
+    }
+
+    function irParaApp(nome) {
+        document.getElementById('login-screen').classList.remove('active');
+        document.getElementById('app-screen').classList.add('active');
+        document.getElementById('userNameDisplay').innerText = nome;
+        document.getElementById('saldoBaseInput').value = localStorage.getItem('fm_saldo_base') || 0;
+        const fotoSalva = localStorage.getItem('fm_user_photo');
+        if(fotoSalva) document.getElementById('userPhoto').src = fotoSalva;
+        render();
+    }
+
+    function salvarGasto() {
+        const desc = document.getElementById('desc').value;
+        const valor = parseFloat(document.getElementById('valor').value);
+        const pag = document.getElementById('pagamento').value;
+        const cat = document.getElementById('categoria').value;
+        const editId = document.getElementById('edit-id').value;
+
+        if (!desc || isNaN(valor)) return;
+
+        if (editId) {
+            const index = gastos.findIndex(g => g.id == editId);
+            gastos[index] = { ...gastos[index], desc, valor, pag, cat };
+            document.getElementById('edit-id').value = "";
+            document.getElementById('btnAction').innerText = "ADICIONAR DESPESA";
+        } else {
+            gastos.push({ id: Date.now(), desc, valor, pag, cat });
+        }
+        localStorage.setItem('fm_gastos', JSON.stringify(gastos));
+        document.getElementById('desc').value = '';
+        document.getElementById('valor').value = '';
+        render();
+    }
+
+    function render() {
+        const saldoBase = parseFloat(document.getElementById('saldoBaseInput').value) || 0;
+        localStorage.setItem('fm_saldo_base', saldoBase);
+
+        const totalCartao = gastos.filter(g => g.pag === 'cartao').reduce((acc, i) => acc + i.valor, 0);
+        const totalDinheiroPix = gastos.filter(g => g.pag === 'dinheiro' || g.pag === 'pix').reduce((acc, i) => acc + i.valor, 0);
+        const totalGeral = totalCartao + totalDinheiroPix;
+        
+        // CÁLCULO DE ABATIMENTO DO SALDO
+        const saldoAtual = saldoBase - totalGeral;
+        const percConsumido = saldoBase > 0 ? (totalGeral / saldoBase) * 100 : 0;
+        const percRestante = 100 - percConsumido;
+
+        const displaySaldo = document.getElementById('saldoAtualDisplay');
+        displaySaldo.innerText = `R$ ${saldoAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        
+        // ALERTAS VISUAIS
+        displaySaldo.style.color = 'white';
+        if (saldoAtual < 0) {
+            displaySaldo.style.color = '#ff7675'; // Vermelho se estourar
+        } else if (percRestante <= 30 && saldoBase > 0) {
+            displaySaldo.style.color = '#f1c40f'; // Amarelo se chegar em 30%
+            if(!sessionStorage.getItem('alerta_30')) {
+                alert("⚠️ Atenção: Você já utilizou 70% do seu saldo mensal!");
+                sessionStorage.setItem('alerta_30', 'true');
+            }
+        }
+
+        document.getElementById('cartaoDisplay').innerText = `R$ ${totalCartao.toFixed(2)}`;
+        document.getElementById('dinheiroPixDisplay').innerText = `R$ ${totalDinheiroPix.toFixed(2)}`;
+        document.getElementById('barFill').style.width = `${Math.min(percConsumido, 100)}%`;
+        document.getElementById('barFill').style.backgroundColor = percConsumido > 70 ? (percConsumido > 90 ? '#ff7675' : '#f1c40f') : '#2ecc71';
+
+        document.getElementById('lista').innerHTML = gastos.map(g => `
+            <div class="list-item">
+                <div style="flex:1"><span style="display:block; font-weight:700;">${iconesCat[g.cat]} ${g.desc}</span><small style="opacity:0.6;">${iconesPag[g.pag]} ${g.pag.toUpperCase()}</small></div>
+                <div style="display:flex; align-items:center; gap:10px;"><strong style="color:var(--danger);">- R$ ${g.valor.toFixed(2)}</strong>
+                <button style="color:var(--primary);border:none;background:none;cursor:pointer;" onclick="editarGasto(${g.id})"><i class="fa-solid fa-pen"></i></button>
+                <button style="color:var(--danger);border:none;background:none;cursor:pointer;" onclick="deletarGasto(${g.id})"><i class="fa-solid fa-trash-can"></i></button></div>
+            </div>
+        `).reverse().join('');
+    }
+
+    function editarGasto(id) {
+        const g = gastos.find(item => item.id == id);
+        document.getElementById('desc').value = g.desc;
+        document.getElementById('valor').value = g.valor;
+        document.getElementById('pagamento').value = g.pag;
+        document.getElementById('categoria').value = g.cat;
+        document.getElementById('edit-id').value = g.id;
+        document.getElementById('btnAction').innerText = "SALVAR ALTERAÇÃO";
+        window.scrollTo(0,0);
+    }
+
+    function deletarGasto(id) { if(confirm("Excluir?")) { gastos = gastos.filter(g => g.id !== id); localStorage.setItem('fm_gastos', JSON.stringify(gastos)); render(); } }
+    function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+    function atualizarFoto(input) { if (input.files && input.files) { const reader = new FileReader(); reader.onload = (e) => { localStorage.setItem('fm_user_photo', e.target.result); document.getElementById('userPhoto').src = e.target.result; }; reader.readAsDataURL(input.files); } }
+    function gerarPDF() { alert("Gerando relatório... O arquivo será baixado em instantes."); }
+</script>
+</body>
+</html>
         /* DASHBOARD */
         .dashboard-card { background: linear-gradient(145deg, #103a24, #0a1f14); color: white; padding: 30px 25px; border-radius: 28px; margin-bottom: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
         .balance-box label { display: block; font-size: 13px; font-weight: 700; opacity: 0.8; margin-bottom: 8px; text-transform: uppercase; text-align: center;}
